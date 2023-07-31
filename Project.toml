@@ -2,3 +2,9 @@ name = "ROCTX"
 uuid = "1f8142f7-cf8c-4d6f-901a-02e2ca285dac"
 authors = ["Carsten Bauer <carsten.bauer@uni-paderborn.de>"]
 version = "0.1.0"
+
+[deps]
+Preferences = "21216c6a-2e73-6563-6e65-726566657250"
+
+[compat]
+Preferences = "1"
