@@ -1,7 +1,3 @@
-module LibROCTX
-
-using ..ROCTX: libroctx
-
 # const ROCTX_VERSION_MAJOR = 4
 # const ROCTX_VERSION_MINOR = 1
 
@@ -9,6 +5,11 @@ const roctx_range_id_t = UInt64
 
 function roctxMarkA(message)
     ccall((:roctxMarkA, libroctx), Cvoid, (Ptr{Cchar},), message)
+end
+
+mark(message) = begin
+    @show message
+    roctxMarkA(message)
 end
 
 function roctxRangePushA(message)
@@ -27,13 +28,3 @@ end
 function roctxRangeStop(id)
     ccall((:roctxRangeStop, libroctx), Cvoid, (roctx_range_id_t,), id)
 end
-
-# exports
-const PREFIXES = ["roctx"]
-for name in names(@__MODULE__; all=true), prefix in PREFIXES
-    if startswith(string(name), prefix)
-        @eval export $name
-    end
-end
-
-end # module

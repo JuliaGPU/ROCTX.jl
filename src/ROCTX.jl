@@ -11,5 +11,8 @@ function set_libroctx_path(libroctx)
 end
 
 include("libroctx_api.jl")
+include("macro.jl")
+
+export mark
 
 end # module ROCTX
