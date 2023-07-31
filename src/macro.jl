@@ -25,10 +25,9 @@ function process_args(args)
             end
         end
     end
+
     if isnothing(locinfo)
-        locinfo = true
-    else
-        locinfo = esc(locinfo)
+        locinfo = false
     end
 
     message = esc(message)
@@ -40,5 +39,33 @@ macro mark(args...)
     locinfo_expr = locinfo ? esc(" ($(__module__):$(file_lineno(__source__)))") : esc("")
     quote
         mark($message * $(locinfo_expr))
+    end
+end
+
+macro range(args...)
+    @assert length(args) >= 1
+    expr = args[end]
+    args = args[1:end-1]
+    message, locinfo = process_args(args)
+    locinfo_expr = locinfo ? esc(" ($(__module__):$(file_lineno(__source__)))") : esc("")
+    quote
+        range_push($message * $(locinfo_expr))
+        # Use Expr(:tryfinally, ...) so we don't introduce a new soft scope (https://github.com/JuliaGPU/NVTX.jl/issues/28)
+        # TODO: switch to solution once https://github.com/JuliaLang/julia/pull/39217 is resolved
+        $(Expr(:tryfinally, esc(expr), :(range_pop())))
+    end
+end
+
+macro range_startstop(args...)
+    @assert length(args) >= 1
+    expr = args[end]
+    args = args[1:end-1]
+    message, locinfo = process_args(args)
+    locinfo_expr = locinfo ? esc(" ($(__module__):$(file_lineno(__source__)))") : esc("")
+    quote
+        rangeid = range_start($message * $(locinfo_expr))
+        # Use Expr(:tryfinally, ...) so we don't introduce a new soft scope (https://github.com/JuliaGPU/NVTX.jl/issues/28)
+        # TODO: switch to solution once https://github.com/JuliaLang/julia/pull/39217 is resolved
+        $(Expr(:tryfinally, esc(expr), :(range_stop(rangeid))))
     end
 end

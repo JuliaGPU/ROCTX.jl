@@ -7,10 +7,7 @@ function roctxMarkA(message)
     ccall((:roctxMarkA, libroctx), Cvoid, (Ptr{Cchar},), message)
 end
 
-mark(message) = begin
-    @show message
-    roctxMarkA(message)
-end
+mark(message) = roctxMarkA(message)
 
 function roctxRangePushA(message)
     ccall((:roctxRangePushA, libroctx), Cint, (Ptr{Cchar},), message)
@@ -28,3 +25,9 @@ end
 function roctxRangeStop(id)
     ccall((:roctxRangeStop, libroctx), Cvoid, (roctx_range_id_t,), id)
 end
+
+range_start(message) = roctxRangeStartA(message)
+range_stop(id) = roctxRangeStop(id)
+
+range_push(message) = roctxRangePushA(message)
+range_pop() = roctxRangePop()
