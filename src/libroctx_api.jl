@@ -31,3 +31,13 @@ range_stop(id) = roctxRangeStop(id)
 
 range_push(message) = roctxRangePushA(message)
 range_pop() = roctxRangePop()
+
+function roctx_version_major()
+    ccall((:roctx_version_major, libroctx), Cint, ())
+end
+
+function roctx_version_minor()
+    ccall((:roctx_version_minor, libroctx), Cint, ())
+end
+
+versioninfo() = VersionNumber(roctx_version_major(), roctx_version_minor())
