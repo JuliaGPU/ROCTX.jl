@@ -2,3 +2,6 @@ Manifest.toml
 .vscode
 bindings
 .envrc
+*.db
+*.sysinfo.txt
+roctx_test
