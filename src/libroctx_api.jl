@@ -40,4 +40,4 @@ function roctx_version_minor()
     ccall((:roctx_version_minor, libroctx), Cint, ())
 end
 
-versioninfo() = VersionNumber(roctx_version_major(), roctx_version_minor())
+roctx_version() = VersionNumber(roctx_version_major(), roctx_version_minor())
