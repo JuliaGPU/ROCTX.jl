@@ -4,4 +4,3 @@ bindings
 .envrc
 *.db
 *.sysinfo.txt
-roctx_test
