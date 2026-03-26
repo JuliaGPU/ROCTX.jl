@@ -4,7 +4,6 @@ using Preferences
 
 # TOO: support JLL
 const libroctx = @load_preference("libroctx", "libroctx64")
-const libroctracer = @load_preference("libroctracer", "libroctracer64")
 
 function set_libroctx_path(libroctx)
     @set_preferences!("libroctx" => libroctx)
@@ -12,12 +11,25 @@ function set_libroctx_path(libroctx)
 end
 
 include("libroctx_api.jl")
-include("libroctracer_api.jl")
+
+## Markers
+mark(message) = roctxMarkA(message)
+
+## Ranges
+range_push(message) = roctxRangePushA(message)
+range_pop() = roctxRangePop()
+
+range_start(message) = roctxRangeStartA(message)
+range_stop(id) = roctxRangeStop(id)
+
+## Profiler Control
+profiler_pause(tid) = roctxProfilerPause(tid)
+profiler_resume(tid) = roctxProfilerResume(tid)
+
 include("macro.jl")
 
 function versioninfo()
     println("rocTX: ", roctx_version())
-    println("rocTracer: ", roctracer_version())
     return nothing
 end
 

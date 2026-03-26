@@ -7,14 +7,8 @@ function roctxMarkA(message)
     ccall((:roctxMarkA, libroctx), Cvoid, (Ptr{Cchar},), message)
 end
 
-mark(message) = roctxMarkA(message)
-
 function roctxRangePushA(message)
     ccall((:roctxRangePushA, libroctx), Cint, (Ptr{Cchar},), message)
-end
-
-function roctxRangeStartA(message)
-    ccall((:roctxRangeStartA, libroctx), roctx_range_id_t, (Ptr{Cchar},), message)
 end
 
 # no prototype is found for this function at roctx.h:195:15, please use with caution
@@ -22,15 +16,33 @@ function roctxRangePop()
     ccall((:roctxRangePop, libroctx), Cint, ())
 end
 
+function roctxRangeStartA(message)
+    ccall((:roctxRangeStartA, libroctx), roctx_range_id_t, (Ptr{Cchar},), message)
+end
+
 function roctxRangeStop(id)
     ccall((:roctxRangeStop, libroctx), Cvoid, (roctx_range_id_t,), id)
 end
 
-range_start(message) = roctxRangeStartA(message)
-range_stop(id) = roctxRangeStop(id)
+const roctx_thread_id_t = UInt64
 
-range_push(message) = roctxRangePushA(message)
-range_pop() = roctxRangePop()
+function roctxProfilerPause(tid)
+    ccall((:roctxProfilerPause, libroctx), Cint, (roctx_thread_id_t,), tid)
+end
+
+function roctxProfilerResume(tid)
+    ccall((:roctxProfilerResume, libroctx), Cint, (roctx_thread_id_t,), tid)
+end
+
+function roctxNameOsThread(name)
+    ccall((:roctxNameOsThread, libroctx), Cint, (Ptr{Cchar},), name)
+end
+
+function roctxGetThreadId()
+    tid = Ref{roctx_thread_id_t}()
+    ccall((:roctxGetThreadId, libroctx), Cint, (Ptr{roctx_thread_id_t},), tid)
+    return tid[]
+end
 
 function roctx_version_major()
     ccall((:roctx_version_major, libroctx), Cint, ())
