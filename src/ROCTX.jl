@@ -3,7 +3,7 @@ module ROCTX
 using Preferences
 
 # TOO: support JLL
-const libroctx = @load_preference("libroctx", "libroctx64")
+const libroctx = @load_preference("libroctx", "librocprofiler-sdk-roctx")
 
 function set_libroctx_path(libroctx)
     @set_preferences!("libroctx" => libroctx)
