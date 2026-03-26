@@ -23,8 +23,8 @@ range_start(message) = roctxRangeStartA(message)
 range_stop(id) = roctxRangeStop(id)
 
 ## Profiler Control
-profiler_pause(tid) = roctxProfilerPause(tid)
-profiler_resume(tid) = roctxProfilerResume(tid)
+profiler_pause(tid=UInt64(0)) = roctxProfilerPause(tid)
+profiler_resume(tid=UInt64(0)) = roctxProfilerResume(tid)
 
 include("macro.jl")
 
